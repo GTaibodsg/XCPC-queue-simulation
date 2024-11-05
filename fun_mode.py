@@ -121,7 +121,7 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
             print(f"[Fe]排名:{rank},(通过={team_state[team_id][0]},罚时={team_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,{state}")
 
 
-    time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉()
+    # time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉()
 
 valid=0
 for i in team_state:
@@ -138,14 +138,26 @@ if valid*6%10>0:
     CU+=1
 
 print("最终结果")
+List=[] # 排名
+List.append(None)
 for i in team_state:
-    rank=i
+    List.append(None)
+for i in team_state:
+    rank=1
+    for j in team_state:  # O(n)判断目前排名
+        if team_state[j][0]>team_state[i][0] or (team_state[j][0]==team_state[i][0] and team_state[j][1]<team_state[i][1]):
+            rank+=1
+    R=rank
+    while List[R]!=None: # 处理成绩一样的情况
+        R+=1
     team=get_team[i]
     if rank<=AU:
-        print(f"[Au]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}")
+        List[R]=f"[Au]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}"
     elif rank<=AG:
-        print(f"[Ag]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}")
+        List[R]=f"[Ag]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}"
     elif rank<=CU:
-        print(f"[Cu]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}")
+        List[R]=f"[Cu]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}"
     else:
-        print(f"[Fe]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}")
+        List[R]=f"[Fe]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}"
+for i in team_state:
+    print(List[i])
