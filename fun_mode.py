@@ -78,7 +78,7 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
         print(f"Time={i//60}")
 
     for j in range(problem_cnt):
-        if i>1501 and i-first_solve_time[j+1]==1501:
+        if 1501<i<=17700 and i-first_solve_time[j+1]==1501:
             print(f"距离{get_problem_chr[j+1]}题一血祝福结束还有 5min")
         if i>1801 and i-first_solve_time[j+1]==1801:
             print(f"{get_problem_chr[j+1]}题一血祝福已结束，此后提交通过数修正为 1 题")
