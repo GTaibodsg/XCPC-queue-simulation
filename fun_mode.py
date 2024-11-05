@@ -121,7 +121,7 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
             print(f"[Fe]排名:{rank},(通过={team_state[team_id][0]},罚时={team_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,{state}")
 
 
-    # time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉()
+    time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉()
 
 valid=0
 for i in team_state:
