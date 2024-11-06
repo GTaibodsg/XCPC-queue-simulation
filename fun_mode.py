@@ -39,6 +39,7 @@ for i in range(team_cnt):
         for j in range(problem_cnt):
             problem_solved_team[i+1][j+1]=0
             judge_CE[i+1][j+1]=0
+            problem_solved_team[i+1][j+1]=0
 
 
 AU=team_cnt//10 # 计算金牌线，下同
@@ -84,8 +85,9 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
 
 
         if state=="OK" and problem_solved_team[team_id][get_problem_id[problem_id]]==0: # 该队伍 AC 了这道题
-            team_state[team_id]+=max(200,600-cur_time-20*(cur_try-1))
-            problem_solved_team[team_id][get_problem_id[problem_id]]=1
+            w=max(200,600-cur_time-10*(cur_try-1)*(cur_try-1))
+            team_state[team_id]+=w
+            problem_solved_team[team_id][get_problem_id[problem_id]]=w
             problem_solved[problem_id]+=1
             if problem_solved[problem_id]==1: # 一血队伍
                 print(f"{problem_id}题一血已诞生！")
@@ -145,5 +147,8 @@ for i in team_state:
         List[R]=f"[Cu]排名:{rank},(得分={team_state[i]}),{team}"
     else:
         List[R]=f"[Fe]排名:{rank},(得分={team_state[i]}),{team}"
+    List[R]+="\n\t"
+    for j in range(1,problem_cnt+1):
+        List[R]+="%03d "%problem_solved_team[i][j] # 最终每个题目的得分
 for i in team_state:
     print(List[i])
