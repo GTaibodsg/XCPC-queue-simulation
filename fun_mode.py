@@ -1,7 +1,4 @@
-# 这是 fun mode，和一般的 XCPC 赛制有所不同：
-# 1.罚时公式修改为：当前时间 + 10min * 当前的错误提交次数的平方，错误提交次数算上编译错误次数
-# 2.一血队伍视作通过三道题，一血后的 30min 内通过该题的视作通过两道题
-# 3.不进行封榜
+# 这是 fun mode，采用 cf 赛制，具体规则可以参考 readme 文件
 
 import time
 
@@ -17,8 +14,7 @@ get_problem_id={} # 题目字母和数字转换
 get_problem_chr={}
 judge_CE={} # 记录CE提交的次数，修正罚时
 get_team={} # 对队伍编号
-team_state={} # 队伍状态，包括通过数和罚时
-first_solve_time={} # 记录该题一血的时间戳
+team_state={} # 队伍分数
 
 
 for i in range(problem_cnt): # 读入题目信息
@@ -26,7 +22,6 @@ for i in range(problem_cnt): # 读入题目信息
     problem_solved[ch]=0
     get_problem_id[ch]=i+1
     get_problem_chr[i+1]=ch
-    first_solve_time[i+1]=0
 
 
 flag=True # 记录是否已经处理完所有队伍
@@ -38,7 +33,7 @@ for i in range(team_cnt):
         flag=False
     else:
         get_team[i+1]=str
-        team_state[i+1]=[0,0]
+        team_state[i+1]=0
         problem_solved_team[i+1]={}
         judge_CE[i+1]={}
         for j in range(problem_cnt):
@@ -77,55 +72,46 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
     if i%60==0: # 输出现在的时间（分钟）
         print(f"Time={i//60}")
 
-    for j in range(problem_cnt):
-        if 1501<i<=17700 and i-first_solve_time[j+1]==1501:
-            print(f"距离{get_problem_chr[j+1]}题一血祝福结束还剩 5min")
-        if i>1801 and i-first_solve_time[j+1]==1801:
-            print(f"{get_problem_chr[j+1]}题一血祝福已结束")
-
 
     while ind<submit_cnt and list[ind]["cur_time"]==i: # 处理所有当前时间戳的提交
         team_id=list[ind]["team_id"]
         problem_id=list[ind]["problem_id"]
-        cur_try=list[ind]["cur_try"]
-        cur_time=list[ind]["cur_time"]
+        cur_try=list[ind]["cur_try"]-judge_CE[team_id][get_problem_id[problem_id]]
+        cur_time=list[ind]["cur_time"]//60
         state=list[ind]["state"]
         team=get_team[team_id]
         ind+=1
 
 
         if state=="OK" and problem_solved_team[team_id][get_problem_id[problem_id]]==0: # 该队伍 AC 了这道题
-            team_state[team_id][0]+=1
+            team_state[team_id]+=max(200,600-cur_time-20*(cur_try-1))
             problem_solved_team[team_id][get_problem_id[problem_id]]=1
             problem_solved[problem_id]+=1
             if problem_solved[problem_id]==1: # 一血队伍
                 print(f"{problem_id}题一血已诞生！")
-                team_state[team_id][0]+=2
-                first_solve_time[get_problem_id[problem_id]]=cur_time;
-            elif cur_time-first_solve_time[get_problem_id[problem_id]]<=1800:
-                team_state[team_id][0]+=1
-            team_state[team_id][1]+=cur_time//60+10*(cur_try-1)*(cur_try-1)
+        elif state=="CE": # 处理编译错误的情况
+            judge_CE[team_id][get_problem_id[problem_id]]+=1
 
 
         rank=1
         for j in team_state: # O(n)判断目前排名
-            if team_state[j][0]>team_state[team_id][0] or (team_state[j][0]==team_state[team_id][0] and team_state[j][1]<team_state[team_id][1]):
+            if team_state[j]>team_state[team_id]:
                 rank+=1
         if rank<=AU:
-            print(f"[Au]排名:{rank},(通过={team_state[team_id][0]},罚时={team_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,{state}")
+            print(f"[Au]排名:{rank},(得分={team_state[team_id]}),{team},第{cur_try}次提交{problem_id}题,{state}")
         elif rank<=AG:
-            print(f"[Ag]排名:{rank},(通过={team_state[team_id][0]},罚时={team_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,{state}")
+            print(f"[Ag]排名:{rank},(得分={team_state[team_id]}),{team},第{cur_try}次提交{problem_id}题,{state}")
         elif rank<=CU:
-            print(f"[Cu]排名:{rank},(通过={team_state[team_id][0]},罚时={team_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,{state}")
+            print(f"[Cu]排名:{rank},(得分={team_state[team_id]}),{team},第{cur_try}次提交{problem_id}题,{state}")
         else:
-            print(f"[Fe]排名:{rank},(通过={team_state[team_id][0]},罚时={team_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,{state}")
+            print(f"[Fe]排名:{rank},(得分={team_state[team_id]}),{team},第{cur_try}次提交{problem_id}题,{state}")
 
 
-    time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉()
+    # time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉()
 
 valid=0
 for i in team_state:
-    if team_state[i][0]>0:
+    if team_state[i]>0:
         valid+=1
 AU=valid//10 # 用有效队伍数修正奖牌线
 if valid%10>0:
@@ -145,19 +131,19 @@ for i in team_state:
 for i in team_state:
     rank=1
     for j in team_state:  # O(n)判断目前排名
-        if team_state[j][0]>team_state[i][0] or (team_state[j][0]==team_state[i][0] and team_state[j][1]<team_state[i][1]):
+        if team_state[j]>team_state[i]:
             rank+=1
     R=rank
     while List[R]!=None: # 处理成绩一样的情况
         R+=1
     team=get_team[i]
     if rank<=AU:
-        List[R]=f"[Au]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}"
+        List[R]=f"[Au]排名:{rank},(得分={team_state[i]}),{team}"
     elif rank<=AG:
-        List[R]=f"[Ag]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}"
+        List[R]=f"[Ag]排名:{rank},(得分={team_state[i]}),{team}"
     elif rank<=CU:
-        List[R]=f"[Cu]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}"
+        List[R]=f"[Cu]排名:{rank},(得分={team_state[i]}),{team}"
     else:
-        List[R]=f"[Fe]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team}"
+        List[R]=f"[Fe]排名:{rank},(得分={team_state[i]}),{team}"
 for i in team_state:
     print(List[i])
