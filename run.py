@@ -5,7 +5,7 @@ contest_name=file.readline()[10:-2] # 比赛名称
 contest_length=int(file.readline()[9:]) # 比赛总时间（300）
 problem_cnt=int(file.readline()[10:]) # 题目数，一般为 13
 team_cnt=int(file.readline()[7:]) # 队伍数，但通常不准确，需要加以修正
-submit_cnt=int(file.readline()[13:]) # 总提交数
+submit_cnt=int(file.readline()[13:]) # 总提交数，但有可能不准确
 problem_solved={} # 记录题目解决信息，便于处理一血
 problem_solved_team={} # 记录哪些队伍解决了某题目，便于处理同一队伍多次通过某题目的情况
 get_problem_id={} # 题目字母和数字转换
@@ -52,7 +52,11 @@ if team_cnt*6%10>0:
 
 list=[] # 读入提交列表
 for i in range(submit_cnt):
-    tmp=file.readline()[3:-1].split(",")
+    str=file.readline()
+    if len(str)<=3: # 如果没有读到东西
+        submit_cnt=i
+        break
+    tmp=str[3:-1].split(",")
     team_id=int(tmp[0]) # 队伍的编号
     problem_id=tmp[1] # 队伍提交的题目编号
     cur_try=int(tmp[2]) # 队伍尝试该题的次数（包括CE）
@@ -116,7 +120,7 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
                 print(f"[??]排名:??,(通过>={frozen_state[team_id][0]},罚时>={frozen_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,??")
 
 
-    time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉或者修改参数()
+    # time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉或者修改参数()
 
 valid=0
 for i in team_state:
