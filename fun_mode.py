@@ -55,7 +55,11 @@ if team_cnt*6%10>0:
 
 list=[] # 读入提交列表
 for i in range(submit_cnt):
-    tmp=file.readline()[3:-1].split(",")
+    str=file.readline()
+    if len(str) <= 3:  # 如果没有读到东西
+        submit_cnt=i
+        break
+    tmp=str[3:-1].split(",")
     team_id=int(tmp[0]) # 队伍的编号
     problem_id=tmp[1] # 队伍提交的题目编号
     cur_try=int(tmp[2]) # 队伍尝试该题的次数（包括CE）
