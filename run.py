@@ -141,7 +141,10 @@ if valid*6%10>0:
 
 print("最终结果")
 for i in team_state:
-    rank=i
+    rank=1
+    for j in team_state:  # O(n)判断目前排名
+        if team_state[j][0]>team_state[i][0] or (team_state[j][0]==team_state[i][0] and team_state[j][1]<team_state[i][1]):
+            rank+=1
     team=get_team[i]
     if rank<=AU:
         print(f"[Au]排名:{rank},(通过={team_state[i][0]},罚时={team_state[i][1]}),{team},封榜后做出{team_state[i][0]-frozen_state[i][0]}题")
