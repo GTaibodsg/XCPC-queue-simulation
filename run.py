@@ -122,6 +122,9 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
 
     time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉或者修改参数()
 
+print("比赛结束，即将揭晓最终结果")
+time.sleep(3)
+
 valid=0
 for i in team_state:
     if team_state[i][0]>0:
