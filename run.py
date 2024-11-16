@@ -74,12 +74,12 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
 
     if i%60==0: # 输出现在的时间（分钟）
         print(f"Time={i//60}")
-        if i==contest_length*48:
-            print("比赛还剩最后一小时，现在开始封榜。")
-            for i in team_state:
-                frozen_state[i][0]=team_state[i][0]
-                frozen_state[i][1]=team_state[i][1]
-            frozen=True
+    if i==contest_length*60-3600:
+        print("比赛还剩最后一小时，现在开始封榜。")
+        for i in team_state:
+            frozen_state[i][0]=team_state[i][0]
+            frozen_state[i][1]=team_state[i][1]
+        frozen=True
 
 
     while ind<submit_cnt and list[ind]["cur_time"]==i: # 处理所有当前时间戳的提交
