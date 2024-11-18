@@ -76,9 +76,9 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
         print(f"Time={i//60}")
     if i==contest_length*60-3600:
         print("比赛还剩最后一小时，现在开始封榜。")
-        for i in team_state:
-            frozen_state[i][0]=team_state[i][0]
-            frozen_state[i][1]=team_state[i][1]
+        for j in team_state:
+            frozen_state[j][0]=team_state[j][0]
+            frozen_state[j][1]=team_state[j][1]
         frozen=True
 
 
@@ -96,7 +96,7 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
             team_state[team_id][0]+=1
             problem_solved_team[team_id][get_problem_id[problem_id]]=1
             problem_solved[problem_id]+=1
-            if problem_solved[problem_id]==1: # 一血队伍
+            if problem_solved[problem_id]==1 and not frozen: # 一血队伍
                 print(f"{problem_id}题一血已诞生！")
             team_state[team_id][1]+=cur_time+20*(cur_try-1)
         elif state=="CE": # 处理编译错误的情况
@@ -117,8 +117,7 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
             else:
                 print(f"[Fe]排名:{rank},(通过={team_state[team_id][0]},罚时={team_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,{state}")
         else:
-                print(f"[??]排名:??,(通过>={frozen_state[team_id][0]},罚时>={frozen_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,??")
-
+            print(f"[??]排名:??,(通过>={frozen_state[team_id][0]},罚时>={frozen_state[team_id][1]}),{team},第{cur_try}次提交{problem_id}题,??")
 
     time.sleep(1) # 模拟时间，等待 1 秒，可以注释掉或者修改参数()
 
