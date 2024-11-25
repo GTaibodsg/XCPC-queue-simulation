@@ -87,7 +87,7 @@ plt.rcParams['font.family']='Times New Roman, SimSun'
 
 plt.figure(figsize=(20, 10))
 
-plt.plot(TOTAL)
+plt.plot(TOTAL,color='blue')
 plt.title('提交频率展示')
 plt.xlabel('时间')
 plt.ylabel('提交数')
@@ -96,7 +96,7 @@ plt.xticks(range(0,301,15))
 plt.show()
 
 plt.figure(figsize=(20, 10))
-plt.plot(AC)
+plt.plot(AC,color='red')
 plt.title('每分钟的有效AC数')
 plt.xlabel('时间')
 plt.ylabel('有效AC提交')
