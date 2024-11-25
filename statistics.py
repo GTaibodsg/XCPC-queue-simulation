@@ -14,9 +14,9 @@ frozen_state={}
 get_team={} # 对队伍编号
 team_state={} # 队伍状态，包括通过数和罚时
 
-AC=[0]*300
-TOTAL=[0]*300
-TIME=[0]*300
+AC=[0]*contest_length
+TOTAL=[0]*contest_length
+TIME=[0]*contest_length
 
 
 for i in range(problem_cnt): # 读入题目信息
@@ -80,7 +80,7 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
             problem_solved_team[team_id][get_problem_id[problem_id]]=1
             AC[i//60]+=1
 
-for i in range(1,300):
+for i in range(0,contest_length):
     TIME[i]=i
 
 plt.rcParams['font.family']='Times New Roman, SimSun'
