@@ -96,7 +96,7 @@ plt.xticks(range(0,301,15))
 plt.show()
 
 plt.figure(figsize=(20, 10))
-plt.plot(AC,color='red')
+plt.plot(AC,color='green')
 plt.title('每分钟的有效AC数')
 plt.xlabel('时间')
 plt.ylabel('有效AC提交')
