@@ -32,6 +32,6 @@
 
 ### upd 2：更新了statistics.py，现在可以可视化查看赛时每分钟的提交频率和有效AC提交数。
 
-效果如下图所示：
+效果示意图如下所示：
 
 ![alt text](imgs/image-2.png)
