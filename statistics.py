@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 file=open("data.dat","r",encoding="utf-8") # data.dat 为 XCPCIO 上下载的数据，可替换为任意一场比赛，以 2024 ICPC 成都站为例
 contest_name=file.readline()[10:-2] # 比赛名称
 contest_length=int(file.readline()[9:]) # 比赛总时间（300）
@@ -12,8 +14,9 @@ frozen_state={}
 get_team={} # 对队伍编号
 team_state={} # 队伍状态，包括通过数和罚时
 
-AC=[0]*310
-TOTAL=[0]*310
+AC=[0]*300
+TOTAL=[0]*300
+TIME=[0]*300
 
 
 for i in range(problem_cnt): # 读入题目信息
@@ -77,5 +80,22 @@ for i in range(contest_length*60): # 模拟比赛提交队列情况
             problem_solved_team[team_id][get_problem_id[problem_id]]=1
             AC[i//60]+=1
 
-for i in range(300):
-    print(f"{i}分钟到{i+1}分钟有{TOTAL[i]}发提交，其中有{AC[i]}发是有效的通过提交。")
+for i in range(1,300):
+    TIME[i]=i
+
+plt.rcParams['font.family']='Times New Roman, SimSun'
+
+plt.figure(figsize=(20, 10))
+
+plt.plot(TOTAL)
+plt.title('提交频率展示')
+plt.xlabel('时间')
+plt.ylabel('提交数')
+plt.show()
+
+plt.figure(figsize=(20, 10))
+plt.plot(AC)
+plt.title('每分钟的有效AC数')
+plt.xlabel('时间')
+plt.ylabel('有效AC提交')
+plt.show()
