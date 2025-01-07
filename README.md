@@ -14,11 +14,11 @@
 
 项目中的 data.dat 为 2024 ICPC 成都站。这个文件可以替换为任意一场比赛，做法是在 <a href="https://board.xcpcio.com/">XCPCIO</a> 网站下载对应比赛的 dat 文件然后覆盖掉项目里的 data.dat 文件即可。
 
-![alt text](imgs/image.png)
+<img src="imgs/image.png" alt="此处应有一张图片：imgs/image.png"></img>
 
 代码运行效果如下图：
 
-![alt text](imgs/image-1.png)
+<img src="imgs/image-1.png" alt="此处应有一张图片：imgs/image-1.png"></img>
 
 **注意：受赛站奖牌分配具体规则可能略有不同（奖牌线的设置、是否考虑有效队伍等）和打星队伍参与统计的影响，该项目中奖牌分配相关的部分只能作为一个粗略的模拟。**
 
@@ -34,4 +34,4 @@
 
 效果示意图如下所示：
 
-![alt text](imgs/image-2.png)
+<img src="imgs/image-2.png" alt="此处应有一张图片：imgs/image-2.png"></img>
